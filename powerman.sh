@@ -21,6 +21,7 @@ else
         shift
     done
 
-    python3 /usr/local/bin/ci-client.py $COMMAND -c nrc.cfg -u bbb1 -r $relay 
+    cd /usr/local/bin/
+    python3 ci-client.py $COMMAND -c nrc.cfg -u bbb1 -r $relay 
 fi
 
