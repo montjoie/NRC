@@ -22,6 +22,7 @@ else
     done
 
     cd /usr/local/bin/
+    ls -l 
     python3 ci-client.py $COMMAND -c nrc.cfg -u bbb1 -r $relay 
 fi
 
