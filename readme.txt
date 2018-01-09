@@ -38,7 +38,7 @@ Therefore, pin address and commands are sent through rpc from the client side, t
 
    Thus, with the previous example we can send a "on" command like this :
 
-   python3 ci-client.py -c nrc.cfg on -u bbb1 -r relay1 -m SAINSMART_BBB
+   python3 ci-client.py -c nrc.cfg on -u bbb1 -r relay1
 
 
 
