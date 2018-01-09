@@ -12,16 +12,15 @@ import os.path
 CONTROLLER_RPC_PORT = 6789
 
 def read_config(conf_file,board_name, mapping_section,relayname):
-    boards_section="BOARDS"
+    boards_section = "BOARDS"
+    board_ip = "NONE"
     config = SafeConfigParser()
     config.read(conf_file)
-    if check_section(config,boards_section):                    # Check if the requested board exists in the cfg file
-        board_ip = config.get(boards_section,board_name)
-        print( board_ip)
-    if check_option(config,mapping_section,relayname):                    # Check if the requested board exists in the cfg file
-        pinaddr = config.get(mapping_section, relayname)
-        print ( pinaddr )
-    return(board_ip, pinaddr)
+    if check_section(config,boards_section):                    # Check if the board <section> exists in the cfg file
+        if check_option(config,boards_section, board_name):                    # Check if the requested board <name> exists in the cfg file
+            board_ip = config.get(boards_section,board_name)
+            print("boardip lue:", board_ip)
+    return(board_ip)
 
 def check_section(parser, section):
     if not parser.has_section(section):
@@ -37,6 +36,9 @@ def check_option(parser,section, option):
     else :
         return True
 
+
+# Needed during lava job from docker
+#os.chdir("/usr/local/bin")
 
 #args without '-' is mandatory
 parser = argparse.ArgumentParser()
@@ -68,23 +70,25 @@ if args.configfile:
         mapping = args.mapping
         relayname = args.relayname
         print("Using config file : ", configfile, mapping, board, relayname)
-        servercfg,pinaddr = read_config(configfile, board,mapping,relayname)
+        servercfg = read_config(configfile, board,mapping,relayname)
         
-        serveraddr = "%s:%d" % (servercfg, CONTROLLER_RPC_PORT)
-        print ("connecting to : ", serveraddr)
-        s = xmlrpc.client.ServerProxy("http://%s/ci" % serveraddr)
+        if servercfg != "NONE":
+            serveraddr = "%s:%d" % (servercfg, CONTROLLER_RPC_PORT)
+            print ("connecting to : ", serveraddr)
+            s = xmlrpc.client.ServerProxy("http://%s/ci" % serveraddr)
     
-if args.pinaddress:
-    pinaddr = "%s" % (args.pinaddress)
-
-if args.boardtype:
-    print(args.boardtype)
-
-if args.command == "version":
-    print(s.version())
-
-if args.command == "on":
-    print(s.on(pinaddr))
-
-if args.command == "off":
-    print(s.off(pinaddr))
+            if args.pinaddress:
+                pinaddr = "%s" % (args.pinaddress)
+            
+            if args.boardtype:
+                print(args.boardtype)
+            
+            if args.command == "version":
+                print(s.version())
+            
+            if args.command == "on":
+                print("Client on for:", pinaddr)
+                print(s.on(pinaddr))
+            
+            if args.command == "off":
+                print(s.off(pinaddr))
