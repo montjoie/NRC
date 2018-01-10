@@ -1,8 +1,5 @@
 ====== Networked Relay Control ======
 
-Available at : 
-    git clone git@git.baylibre.com:priv/dlewin/NRC
-
 A project to use with Lava CI. Based on //Lavamini//, this adaptation was made to use any board to control
 relays during Lava test jobs.
 
