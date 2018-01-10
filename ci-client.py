@@ -11,7 +11,7 @@ import os.path
 
 CONTROLLER_RPC_PORT = 6789
 
-def read_config(conf_file,board_name, mapping_section,relayname):
+def read_config(conf_file,board_name, relayname):
     boards_section = "BOARDS"
     board_ip = "NONE"
     config = SafeConfigParser()
@@ -29,7 +29,6 @@ def check_section(parser, section):
         return True
 
 def check_option(parser,section, option):
-    print ("APPEL DE check_option: ",section, " et ", option) 
     if not parser.has_option(section,option):
         print(option, "option not found in config file")
         return False
@@ -40,13 +39,11 @@ def check_option(parser,section, option):
 parser = argparse.ArgumentParser()
 
 parser.add_argument("-c", "--configfile", help="Guided mode : use a configfile")
-parser.add_argument("-m", "--mapping", help="which relay mapping is required. To use with a configfile")
 parser.add_argument("-r", "--relayname", help="Guided mode : specify which relay will be used with the command instead of pinaddress. Usable only when using a config file")
 parser.add_argument("-u", "--useboard", help="Guided mode : specify the board name to use. Required when using config file")
 parser.add_argument("-s", "--server", help="Detailed mode : specify CONTROLLER Hostname.")
 parser.add_argument("-p", "--pinaddress", help="Detailed mode : specify which pin to use")
 parser.add_argument("command", help="CONTROLLER Command, use 'help' to get all commands")
-parser.add_argument("-b", "--boardtype", help="request the board type")
 parser.add_argument("-v", "--version", help="request the version number")
 parser.add_argument("args", nargs='?', help="CONTROLLER Command Arguments")
 args = parser.parse_args()
@@ -66,10 +63,9 @@ else:
         configfile = "nrc.cfg" 
         
 board = args.useboard
-mapping = args.mapping
 relayname = args.relayname
-print("Using config file : ", configfile, mapping, board, relayname)
-servercfg = read_config(configfile, board,mapping,relayname)
+print("Using config file : ", configfile, board, relayname)
+servercfg = read_config(configfile, board,relayname)
 
 if servercfg != "NONE":
     serveraddr = "%s:%d" % (servercfg, CONTROLLER_RPC_PORT)
@@ -78,9 +74,6 @@ if servercfg != "NONE":
 
     if args.pinaddress:
         pinaddr = "%s" % (args.pinaddress)
-    
-    if args.boardtype:
-        print(args.boardtype)
     
     if args.command == "version":
         print(s.version())
