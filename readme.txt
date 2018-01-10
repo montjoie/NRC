@@ -61,5 +61,5 @@ For BeagleBone Black:
 
 According to the official cape expansion headers, the BBB fred the HDMI pins by usig dedicated overlay
 
-![alt text](https://raw.githubusercontent.com/username/projectname/branch/path/to/img.png)
-
+![alt text](https://raw.githubusercontent.com/dlewin/NRC/Docs/NRC_BBB.png)
+  
