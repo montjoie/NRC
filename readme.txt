@@ -55,3 +55,11 @@ For BeagleBone Black:
     pip3 install Adafruit_BBIO
 
 /Warning//: as currently I dont't have RPI, this was only tested on BBB
+
+=== Boards ===
+==== BeagleBone Black ====
+
+According to the official cape expansion headers, the BBB fred the HDMI pins by usig dedicated overlay
+
+
+
