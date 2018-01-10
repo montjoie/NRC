@@ -51,7 +51,7 @@ or
 For BeagleBone Black:
     pip3 install Adafruit_BBIO
 
-/Warning//: as currently I dont't have RPI, this was only tested on BBB
+ :warning: as currently I dont't have RPI, this was only tested on BBB
 
 ## Boards ##
 ### BeagleBone Black ###
