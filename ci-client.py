@@ -19,7 +19,6 @@ def read_config(conf_file,board_name, mapping_section,relayname):
     if check_section(config,boards_section):                    # Check if the board <section> exists in the cfg file
         if check_option(config,boards_section, board_name):                    # Check if the requested board <name> exists in the cfg file
             board_ip = config.get(boards_section,board_name)
-            print("boardip lue:", board_ip)
     return(board_ip)
 
 def check_section(parser, section):

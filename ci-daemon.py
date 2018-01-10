@@ -46,19 +46,13 @@ def check_board(parser, map_section):
         return True
 
 # Look for config file, if not: CLI calls are required
-def check_conffile():
-    if not os.path.isfile(args.configfile):                #check that config file exists
-        print("configfile not found", args.configfile) 
-    else:
-        global configfile
-        configfile = args.configfile
-        global mapping 
-        mapping = args.mapping
-        # relayname = args.relayname
-#        relayname="relay1"                                  #DEBUG
-        print("Using config file : ", configfile)
-        boardtype, pinaddr = read_config(configfile, mapping)       
-#        import_boardtype(boardtype)
+def check_conffile(configfile, mapping):
+#        global mapping 
+    if not os.path.isfile(configfile):                #check that config file exists
+         print("config file not found: ", configfile ) 
+         os._exit(1)
+    
+    boardtype, pinaddr = read_config(configfile, mapping)
         
 def check_section(parser, section):
     if not parser.has_section(section):
@@ -78,14 +72,15 @@ parser = argparse.ArgumentParser()
 
 parser.add_argument("mapping", help="which relay mapping is required. To use with a configfile")
 parser.add_argument("args", nargs='?', help="CONTROLLER Command Arguments")
-parser.add_argument("-c", "--configfile", help="Guided mode : use a configfile",default="nrc.cfg")
+parser.add_argument("-c", "--configfile", help="Guided mode : use a configfile")
 
 args = parser.parse_args()
-        
+mapfile = args.mapping
+
 if args.configfile:
-    check_conffile()
-else: 
-    print("no specific config file provided, using default")
+    check_conffile(args.configfile, mapfile)
+else:
+    check_conffile("nrc.cfg", mapfile)
 
 class RequestHandler(SimpleXMLRPCRequestHandler):
     rpc_paths = ('/ci',)

@@ -34,6 +34,6 @@ if [ $COMMAND = "reset" ]
 then
     reset_board $relay
 else
-    python3 ci-client.py $COMMAND -c nrc.cfg -u bbb1 -r $relay
+    python3 ci-client.py $COMMAND -u bbb1 -r $relay
 fi
 
