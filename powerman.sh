@@ -21,7 +21,8 @@ else
         shift
     done
 
-    print `cd /usr/local/bin/`
-    print `python3 ci-client.py $COMMAND -c nrc.cfg -u bbb1 -r $relay`
+    echo "cd /usr/local/bin/"
+    echo "ls"    
+    echo "python3 ci-client.py $COMMAND -c nrc.cfg -u bbb1 -r $relay"
 fi
 
