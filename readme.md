@@ -1,4 +1,4 @@
-# Networked Relay Control #
+# Network Relays Control #
 
 A project to use with Lava CI. Based on //Lavamini//, this adaptation was made to use any board to control
 relays during Lava test jobs.
