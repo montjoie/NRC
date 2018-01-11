@@ -3,9 +3,9 @@
 
 reset_board()
 {
-    print "python3 ci-client.py off -c nrc.cfg -u bbb1 -r $1"
+    /usr/local/bin/ci-client.py off -u bbb1 -p $1
     sleep 5
-    print "python3 ci-client.py on -c nrc.cfg -u bbb1 -r $1"
+    /usr/local/bin/ci-client.py on -u bbb1 -p $1
 }
 
 
@@ -26,14 +26,10 @@ do
     shift
 done
 
-echo "************************************************************************************"
-cd /usr/local/bin/
-ls   
-
 if [ $COMMAND = "reset" ]
 then
     reset_board $relay
 else
-    python3 ci-client.py $COMMAND -u bbb1 -r $relay
+    /usr/local/bin/ci-client.py $COMMAND -u bbb1 -p $relay
 fi
 
