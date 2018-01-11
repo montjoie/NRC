@@ -55,13 +55,15 @@ if args.server:
 
 # Look for config file, if not: CLI calls are required
 if args.configfile:
-    if not os.path.isfile(args.configfile):                #check that config file exists
-        print("configfile not found", args.configfile) 
-    else:
-        configfile = args.configfile
+    configfile = args.configfile
 else:
-        configfile = "nrc.cfg" 
-        
+    configfile = "nrc.cfg" 
+
+if not os.path.isfile(configfile):                #check that config file exists
+        print("configfile not found", configfile) 
+        os._exit(1)
+
+
 board = args.useboard
 relayname = args.relayname
 print("Using config file : ", configfile, board, relayname)

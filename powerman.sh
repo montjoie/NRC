@@ -26,6 +26,8 @@ do
     shift
 done
 
+cd /usr/local/bin
+
 if [ $COMMAND = "reset" ]
 then
     reset_board $relay
