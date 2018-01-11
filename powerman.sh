@@ -12,13 +12,13 @@ reset_board()
 while [ -n "$1" ]
 do
     case "$1" in
-        -off) relay="$2" 
+        --off) relay="$2" 
         COMMAND="off"
         shift ;;
-        -on) relay="$2" 
+        --on) relay="$2" 
         COMMAND="on"
         shift ;;
-        -reset) relay="$2" 
+        --reset) relay="$2" 
         COMMAND="reset"
         shift ;;
         *) echo "Option $1 not recognized";;
