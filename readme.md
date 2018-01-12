@@ -15,6 +15,7 @@ Therefore, pin address and commands are sent through rpc from the client side, t
 1) start the daemon by telling which board you is in use (currently BBB and PI)
 
      ./ci-daemon.py -b BBB
+     
 2) Client side : sending a command
 
    From this point you have 2 options :
@@ -29,13 +30,13 @@ Therefore, pin address and commands are sent through rpc from the client side, t
 
    In this mode, the client relies on a config file that keeps all the internal details, like :
       - board ip : where you give only the name so the ip will be deduced automatically
-      - relays pin mapping : simplifies the way to address relays, instead of having the pin address for a dedicated board you just ask for relay.
+      - relays pin mapping is read from the server side : simplifies the way to address relays, instead of having the pin address for a dedicated board you just ask for relay.
 
    This configfile is the ini format.
 
    Thus, with the previous example we can send a "on" command like this :
 
-   python3 ci-client.py -c nrc.cfg on -u bbb1 -r relay1
+   python3 ci-client.py -u bbb1 -p relay1 on
 
 
 
