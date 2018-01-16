@@ -14,6 +14,7 @@ import os.path
 VERSION = "1.2"
 
 import Adafruit_BBIO.GPIO as GPIO    
+#For Raspberry, replace previous line with: import RPi.GPIO as GPIO 
 
 def read_config(conf_file, mapping_section,relayname=""):
     conf_parser = SafeConfigParser()
@@ -36,7 +37,7 @@ def import_boardtype(boardtype):
         import Adafruit_BBIO.GPIO as GPIO    
     else:                                    
         print ("boardtype: ", boardtype)     
-        import Adafruit_PI.GPIO as GPIO      
+        import RPi.GPIO as GPIO     
     
 #Look for board definition within a section
 def check_board(parser, map_section):
