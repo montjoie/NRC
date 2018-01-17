@@ -14,7 +14,6 @@ import os.path
 VERSION = "1.2"
 
 import Adafruit_BBIO.GPIO as GPIO    
-#For Raspberry, replace previous line with: import RPi.GPIO as GPIO 
 
 def read_config(conf_file, mapping_section,relayname=""):
     conf_parser = SafeConfigParser()
@@ -37,7 +36,7 @@ def import_boardtype(boardtype):
         import Adafruit_BBIO.GPIO as GPIO    
     else:                                    
         print ("boardtype: ", boardtype)     
-        import RPi.GPIO as GPIO     
+        import Adafruit_PI.GPIO as GPIO      
     
 #Look for board definition within a section
 def check_board(parser, map_section):
@@ -79,9 +78,11 @@ args = parser.parse_args()
 mapfile = args.mapping
 
 if args.configfile:
-    check_conffile(args.configfile, mapfile)
+    configfile = args.configfile
 else:
-    check_conffile("nrc.cfg", mapfile)
+    configfile = "nrc.cfg"
+
+check_conffile(configfile, mapfile)
 
 class RequestHandler(SimpleXMLRPCRequestHandler):
     rpc_paths = ('/ci',)
@@ -95,14 +96,14 @@ def version():
 server.register_function(version)
 
 def on(relayname):
-    boardtype, pin_address = read_config(configfile, mapping,relayname)       
+    boardtype, pin_address = read_config(configfile, mapfile,relayname)       
     GPIO.setup( (pin_address) , GPIO.OUT)
     return ("on sent for ", (pin_address))
 
 server.register_function(on)
 
 def off(relayname):
-    boardtype, pin_address = read_config(configfile, mapping,relayname)       
+    boardtype, pin_address = read_config(configfile, mapfile,relayname)       
     GPIO.setup(pin_address,GPIO.IN)
     return ("off sent for ", pin_address)
 
