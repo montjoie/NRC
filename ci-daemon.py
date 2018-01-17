@@ -11,9 +11,11 @@ import argparse
 import sys
 import os.path
 
-VERSION = "1.2"
+VERSION = "1.3"
 
-import Adafruit_BBIO.GPIO as GPIO    
+
+import RPi.GPIO as GPIO
+# For BeagleBone Black, replace previous line by : import Adafruit_BBIO.GPIO as GPIO    
 
 def read_config(conf_file, mapping_section,relayname=""):
     conf_parser = SafeConfigParser()
@@ -35,8 +37,10 @@ def import_boardtype(boardtype):
     if boardtype == "BBB":
         import Adafruit_BBIO.GPIO as GPIO    
     else:                                    
+        boardtype == "PI"                                                               # default is PI
         print ("boardtype: ", boardtype)     
-        import Adafruit_PI.GPIO as GPIO      
+        import RPi.GPIO as GPIO
+        GPIO.setmode(GPIO.BCM)
     
 #Look for board definition within a section
 def check_board(parser, map_section):
@@ -68,46 +72,64 @@ def check_option(parser,section, option):
     else :
         return True
 
-parser = argparse.ArgumentParser()
-
-parser.add_argument("mapping", help="which relay mapping is required. To use with a configfile")
-parser.add_argument("args", nargs='?', help="CONTROLLER Command Arguments")
-parser.add_argument("-c", "--configfile", help="Guided mode : use a configfile")
-
-args = parser.parse_args()
-mapfile = args.mapping
-
-if args.configfile:
-    configfile = args.configfile
-else:
-    configfile = "nrc.cfg"
-
-check_conffile(configfile, mapfile)
-
 class RequestHandler(SimpleXMLRPCRequestHandler):
     rpc_paths = ('/ci',)
 
-# Create server
-server = SimpleXMLRPCServer(("0.0.0.0", 6789), requestHandler=RequestHandler)
-server.register_introspection_functions()
-
 def version():
     return VERSION
-server.register_function(version)
 
 def on(relayname):
     boardtype, pin_address = read_config(configfile, mapfile,relayname)       
-    GPIO.setup( (pin_address) , GPIO.OUT)
-    return ("on sent for ", (pin_address))
+    if boardtype == "PI":
+        GPIO.setup( int(pin_address) , GPIO.OUT)
+        GPIO.setup( int(pin_address) , False)
+    else:
+        GPIO.setup( pin_address , GPIO.OUT)
 
-server.register_function(on)
+    return ("on sent for ", (pin_address))
 
 def off(relayname):
     boardtype, pin_address = read_config(configfile, mapfile,relayname)       
-    GPIO.setup(pin_address,GPIO.IN)
+    if boardtype == "PI":
+        GPIO.setup( int(pin_address) , GPIO.OUT)
+        GPIO.setup( int(pin_address) , True)
+    else:
+        GPIO.setup(pin_address,GPIO.IN)
+
     return ("off sent for ", pin_address)
 
-server.register_function(off)
 
-# Run the server's main loop
-server.serve_forever()
+if __name__ == '__main__':
+
+    # Create server
+    server = SimpleXMLRPCServer(("0.0.0.0", 6789), requestHandler=RequestHandler)
+    server.register_introspection_functions()
+    server.register_function(on)
+    server.register_function(off)
+    server.register_function(version)
+
+    #required only for PI -------------------------
+    GPIO.setmode(GPIO.BCM)
+    
+    parser = argparse.ArgumentParser()
+    
+    parser.add_argument("mapping", help="which relay mapping is required. To use with a configfile")
+    parser.add_argument("args", nargs='?', help="CONTROLLER Command Arguments")
+    parser.add_argument("-c", "--configfile", help="Guided mode : use a configfile")
+    
+    args = parser.parse_args()
+    mapfile = args.mapping
+    
+    if args.configfile:
+        configfile = args.configfile
+    else:
+        configfile = "nrc.cfg"
+    
+    check_conffile(configfile, mapfile)
+    
+    try:   
+         print ('Server is now running, press Ctrl-C to quit.')
+       # Run the server's main loop
+         server.serve_forever()
+    finally:
+         GPIO.cleanup()
