@@ -12,19 +12,19 @@ open to any board. In that sense, it's the client's job to manage the IOs, ie:  
 
 Therefore, pin address and commands are sent through rpc from the client side, that way:
 
-1) start the daemon by telling which board you intend to use (BBB and PI are provided as examples)
+1) on the board start the daemon by telling mapping you intend to use (BBB and PI are provided as examples)
 
-     ./ci-daemon.py -b BBB
+     ./ci-daemon.py SAINSMART_BBB
      
-2) Client side : sending a command
+2) sending a command client side (PC, whatever): 
 
-   From this point you have 2 options :
+   ~~From this point you have 2 options :~~
 
-   ### Detailed mode ####
+   ~~### Detailed mode ####~~
 
-   python3 ci-client.py -s 192.168.1.2 on -p P8_45
+   ~~python3 ci-client.py -s 192.168.1.2 on -p P8_45~~
 
-   which does all the job. The same applies for initialization so at the end it's only matter of setting pins on and off.
+   ~~which does all the job. The same applies for initialization so at the end it's only matter of setting pins on and off.~~
 
    ### Guided mode ###
 
