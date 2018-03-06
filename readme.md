@@ -12,7 +12,7 @@ open to any board. In that sense, it's the client's job to manage the IOs, ie:  
 
 Therefore, pin address and commands are sent through rpc from the client side, that way:
 
-1) start the daemon by telling which board you intend to use (currently BBB and PI)
+1) start the daemon by telling which board you intend to use (BBB and PI are provided as examples)
 
      ./ci-daemon.py -b BBB
      
