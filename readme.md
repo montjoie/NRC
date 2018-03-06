@@ -57,7 +57,7 @@ For BeagleBone Black:
 ## Boards ##
 ### BeagleBone Black ###
 
-According to the official cape expansion headers, the BBB fred the HDMI pins by usig dedicated overlay
+Refer to the official cape expansion headers so the the BBB can have most of the GPIO if you remove the HDMI pins by using  the dedicated overlay
 
 ![alt text](https://raw.githubusercontent.com/dlewin/NRC/master/Docs/NRC_BBB.png)
   
