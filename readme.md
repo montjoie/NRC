@@ -52,7 +52,7 @@ or
 For BeagleBone Black:
     pip3 install Adafruit_BBIO
 
- :warning: as currently I dont't have RPI, this was only tested on BBB
+ :warning: No lib seems to work for OrangePI 
 
 ## Boards ##
 ### BeagleBone Black ###
